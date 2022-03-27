@@ -9,7 +9,7 @@ function App() {
   return (
     <Router>
       <Nav />
-      <Toaster position="bottom-right" />
+      <Toaster position="bottom-right" toastOptions={{ duration: 2000 }} />
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/register" component={Register} />
