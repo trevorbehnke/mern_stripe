@@ -4,7 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 
-function Register() {
+function Register({ history }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,13 +13,21 @@ function Register() {
     // console.log(name, email, password);
     try {
       e.preventDefault();
-      const { data } = await axios.post("/register", {
+      const { data } = await axios.post("http://localhost:8000/api/register", {
         name,
         email,
         password,
       });
       console.log(data);
-      toast.success("Registered successfully!");
+      if (data.error) {
+        toast.error(data.error);
+      } else {
+        setName("");
+        setEmail("");
+        setPassword("");
+        toast.success(`Hey ${data.user.name}, you are part of the family now!`);
+        history.push("/login");
+      }
     } catch (err) {
       console.log(err);
       toast.error("Something went wrong!");

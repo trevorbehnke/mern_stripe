@@ -2,8 +2,8 @@ import express from "express";
 
 const router = express.Router();
 
-import { register } from "../controllers/auth";
+import { prices } from "../controllers/subs";
 
-router.post("/register", register);
+router.get("/prices", prices);
 
 module.exports = router;
