@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import PriceCard from "../components/cards/PriceCard";
+import {UserContext} from "../context";
 
-function Home() {
+function Home({ history }) {
+  const [state, setState] = useContext(UserContext);
   const [prices, setPrices] = useState([]);
 
   useEffect(() => {
@@ -14,9 +16,17 @@ function Home() {
     setPrices(data);
   };
 
-  const handleClick = async (e) => {
+  const handleClick = async (e, price) => {
     e.preventDefault();
-    console.log("Plan clicked!!!");
+    // console.log("Plan clicked!!!", price.id);
+    if(state && state.token) {
+      const { data } = await axios.post("create-subscription", {
+        priceId: price.id,
+      });
+      window.open(data);
+    } else {
+      history.push("/register");
+    }
   };
 
   //  get the first three objects from the array since I can't delete old products from stripe
@@ -32,7 +42,7 @@ function Home() {
       </div>
       <div className="row pt-5 mb-3 text-center">
         {pricesToShow.map((price) => (
-          <PriceCard key={price.id} price={price} handleClick={handleClick} />
+          <PriceCard key={price.id} price={price} handleSubscription={handleClick} />
         ))}
       </div>
     </div>

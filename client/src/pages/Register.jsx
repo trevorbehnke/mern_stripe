@@ -11,7 +11,7 @@ function Register({ history }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [state, setState] = useContext(UserContext);
+  const [, setState] = useContext(UserContext);
 
   const handleClick = async (e) => {
     // console.log(name, email, password);

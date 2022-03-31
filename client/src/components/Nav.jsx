@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { isAuth } from "../utils/functions";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "../context/";
 import { useContext } from "react";
