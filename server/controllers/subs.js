@@ -65,3 +65,16 @@ export const subscriptions = async (req, res) => {
     console.log(error);
   }
 };
+
+export const customerPortal = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    const portalSession = await stripe.billingPortal.sessions.create({
+      customer: user.stripe_customer_id,
+      return_url: process.env.STRIPE_SUCCESS_URL,
+    });
+    res.json(portalSession.url);
+  } catch (error) {
+    console.log(error);
+  }
+};
