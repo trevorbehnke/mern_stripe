@@ -47,7 +47,14 @@ const Account = ({ history }) => {
                     .format("dddd, MMMM Do YYYY h:mm:ss a")
                     .toString()}
                 </p>
-                <button className="btn btn-outline-danger">Access</button>
+                <button
+                  onClick={() =>
+                    history.push(`${sub.plan.nickname.toLowerCase()}`)
+                  }
+                  className="btn btn-outline-danger"
+                >
+                  Access
+                </button>
                 <button className="btn btn-outline-warning">
                   Manage Subscription
                 </button>

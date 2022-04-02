@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { UserContext } from "../../context";
 
-const PriceCard = ({ price, handleSubscription }) => {
+const PriceCard = ({ price, handleSubscription, userSubscriptions }) => {
   const [state] = useContext(UserContext);
   const dynamicDescription = () => {
     if (price.nickname === "BASIC") {
@@ -72,12 +72,14 @@ const PriceCard = ({ price, handleSubscription }) => {
           {/* <pre>{JSON.stringify(price)}</pre> */}
 
           {/* <Link to="./register"> */}
-            <button
-              onClick={(e) => handleSubscription(e, price)}
-              className={`w-100 btn btn-lg ${buttonStyle()}`}
-            >
-              {buttonText()}
-            </button>
+          <button
+            onClick={(e) => handleSubscription(e, price)}
+            className={`w-100 btn btn-lg ${buttonStyle()}`}
+          >
+            {userSubscriptions && userSubscriptions.includes(price.id)
+              ? "Access Plan"
+              : buttonText()}
+          </button>
           {/* </Link> */}
         </div>
       </div>

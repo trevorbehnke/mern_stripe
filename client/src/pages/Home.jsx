@@ -1,15 +1,26 @@
 import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import PriceCard from "../components/cards/PriceCard";
-import {UserContext} from "../context";
+import { UserContext } from "../context";
 
 function Home({ history }) {
   const [state, setState] = useContext(UserContext);
   const [prices, setPrices] = useState([]);
+  const [userSubscriptions, setUserSubscriptions] = useState([]);
 
   useEffect(() => {
     fetchPrices();
   }, []);
+
+  useEffect(() => {
+    let result = [];
+    const check = () => {
+      state?.user?.subscriptions?.map((sub) => result.push(sub.plan.id));
+    };
+    check();
+    setUserSubscriptions(result);
+  }, [state && state.user]);
+
   const fetchPrices = async () => {
     const { data } = await axios.get("http://localhost:8000/api/prices");
     console.log(data);
@@ -18,8 +29,12 @@ function Home({ history }) {
 
   const handleClick = async (e, price) => {
     e.preventDefault();
+    if (userSubscriptions && userSubscriptions.includes(price.id)) {
+      history.push(`/${price.nickname.toLowerCase()}`);
+      return;
+    }
     // console.log("Plan clicked!!!", price.id);
-    if(state && state.token) {
+    if (state && state.token) {
       const { data } = await axios.post("create-subscription", {
         priceId: price.id,
       });
@@ -42,7 +57,12 @@ function Home({ history }) {
       </div>
       <div className="row pt-5 mb-3 text-center">
         {pricesToShow.map((price) => (
-          <PriceCard key={price.id} price={price} handleSubscription={handleClick} />
+          <PriceCard
+            key={price.id}
+            price={price}
+            handleSubscription={handleClick}
+            userSubscriptions={userSubscriptions}
+          />
         ))}
       </div>
     </div>
