@@ -30,3 +30,24 @@ export const createSubscription = async (req, res) => {
     console.log(error);
   }
 };
+
+export const subscriptionStatus = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    const subscription = await stripe.subscriptions.list({
+      customer: user.stripe_customer_id,
+      status: "all",
+      expand: ["data.default_payment_method"],
+    });
+    const updated = await User.findByIdAndUpdate(
+      user._id,
+      {
+        subscriptions: subscription.data,
+      },
+      { new: true }
+    );
+    res.json(updated);
+  } catch (error) {
+    console.log(error);
+  }
+};
