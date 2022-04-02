@@ -14,7 +14,7 @@ function Nav() {
     history.push("/login");
   };
 
-  console.log("state", state);
+  // console.log("state", state);
 
   return (
     <ul className="nav border">
@@ -24,11 +24,23 @@ function Nav() {
         </Link>
       </li>
       {state && state.token ? (
-        <li className="nav-item">
-          <span onClick={logout} className="nav-link">
-            Logout
-          </span>
-        </li>
+        <div className="nav-item dropdown">
+          <li className="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+            {state.user.email}
+          </li>
+          <ul className="dropdown-menu">
+            <li className="nav-item dropdown-item">
+              <Link className="nav-link" to="/account">
+                Account
+              </Link>
+            </li>
+            <li className="nav-item dropdown-item">
+              <Link className="nav-link" to={""} onClick={logout}>
+                Logout
+              </Link>
+            </li>
+          </ul>
+        </div>
       ) : (
         <>
           <li className="nav-item">
